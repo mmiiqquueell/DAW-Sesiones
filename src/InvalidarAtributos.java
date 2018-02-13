@@ -2,7 +2,6 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,26 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet("/anyadir")
-public class AnyadirAtributo extends HttpServlet {
+@WebServlet("/invalidar")
+public class InvalidarAtributos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     
-    public AnyadirAtributo() {super();}
+    public InvalidarAtributos() {super();}
+
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		// Obtenemos las variables del formulario index. //
-		String atributo = request.getParameter("atributo");
-		String valor = request.getParameter("valor");
-		
-		// Guardarmos en session los valores //
 		HttpSession sesion = request.getSession();
 		
-		// Añadimos a la sesión la información del formulario //
-		sesion.setAttribute(atributo, valor);
+		sesion.invalidate();
 		
-		// Salida del ServLet para el usuario //
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		
@@ -41,18 +33,10 @@ public class AnyadirAtributo extends HttpServlet {
 		out.println("<title>SESIONES</title>");
 		out.println("</head>");
 		out.println("<body>");
-		out.println("<h1>SESIONES DE USUARIO</h1>");
-		Enumeration<String> nombresDeAtributos = sesion.getAttributeNames();
-		while(nombresDeAtributos.hasMoreElements()){
-			atributo = nombresDeAtributos.nextElement();
-			valor = (String) sesion.getAttribute(atributo);
-			out.println("<p>Atributo: " + atributo + "</p>");
-			out.println("<p>Valor: " + valor + "</p><hr>");
-		}
-		out.println("<p>Resultados</p>");
+		out.println("<h1>SESIÓN ELIMINADA</h1>");
+		out.println("<p>Su sesión de usuario ha sido eliminada</p>");
 		out.println("</body>");
 		out.println("</html>");
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {}
